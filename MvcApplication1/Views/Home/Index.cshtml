@@ -1,0 +1,86 @@
+﻿@model MvcApplication1.Models.HomeView
+
+@{
+    ViewBag.Title = "Home Page";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                To learn more about ASP.NET MVC visit
+                <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
+                The page features <mark>videos, tutorials, and samples</mark> to help you get the most from ASP.NET MVC.
+                If you have any questions about ASP.NET MVC visit
+                <a href="http://forums.asp.net/1146.aspx/1?MVC" title="ASP.NET MVC Forum">our forums</a>.
+            </p>
+        </div>
+    </section>
+}
+<h3>We suggest the following:</h3>
+ @Html.ValidationSummary(true)
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-block" }))
+{
+    <input type="hidden" name="search" id="search" value="0" />
+<ul>
+    <li>
+        <strong>@Html.LabelFor(m => m.Email, "Email")</strong><span class="fieldRequired">*</span>
+        @Html.TextBoxFor(m => m.Email, new
+        {
+            @required = "required",
+            @type = "email"
+        })
+        @Html.ValidationMessageFor(m => m.Email, "Please enter your email.")
+    </li>
+    <li>
+        <table><tr><td style="vertical-align:top; text-align:right;">@Html.CheckBoxFor(m => m.AcceptRules)</td><td class="homecheckvalidation"><span class="fieldRequired">*</span></td>
+            <td>@Html.LabelFor(m => m.AcceptRules, "Agree to the rules", "")</td>
+        </tr></table>
+        @Html.ValidationMessageFor(m => m.AcceptRules, "Please agree to the rules.")
+    </li>
+</ul>
+<button type="submit" id="btn1">Send Fast</button>
+<button type="submit" id="btn2">Send Fun</button>
+}
+
+
+@section Scripts {
+    
+<script>
+    $(document).ready(function () {
+        //$(".form-block").submit(function () { return false; });
+
+        $("#btn1").click(function (event) {
+            $form = $(this).parent("form");
+            $('form input[name="search"]').val('1');
+            $form.submit();
+            /*
+            $.post($form.attr("action"), $form.find("input").serialize() + {
+                'submit': $(this).attr("value")
+            }, function (data) {
+                //alert('FAST!');
+            });
+            */
+            //return false; // <--- This doesn't prevent form from submitting; what does!?
+        });
+    });
+
+    $(document).ready(function () {
+        $("#btn2").click(function (event) {
+            $form = $(this).parent("form");
+            $('form input[name="search"]').val('2');
+            
+            $.post($form.attr("action"), $form.find("input").serialize() + {
+                'submit': $(this).attr("value")
+            }, function (data) {
+                //alert('FUN!');
+            });
+            return false; // <--- This doesn't prevent form from submitting; what does!?
+        });
+    });
+</script>
+}
